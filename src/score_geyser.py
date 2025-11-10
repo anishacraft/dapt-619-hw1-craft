@@ -2,6 +2,7 @@ from pathlib import Path
 
 import joblib
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 def main() -> None:
@@ -37,6 +38,24 @@ def main() -> None:
     scored_df.to_csv(output_path, index=False)
 
     print(f"Saved scored data to: {output_path}")
+
+        # ---- Plot actual vs predicted waiting times ----
+    plots_dir = project_root / "plots"
+    plots_dir.mkdir(parents=True, exist_ok=True)
+
+    plot_path = plots_dir / "geyser_predictions.png"
+
+    plt.figure()
+    plt.scatter(scored_df["waiting"], scored_df["predicted_waiting"])
+    plt.xlabel("Actual waiting time")
+    plt.ylabel("Predicted waiting time")
+    plt.title("Actual vs Predicted Waiting Time")
+    plt.tight_layout()
+    plt.savefig(plot_path)
+    plt.close()
+
+    print(f"Saved prediction plot to: {plot_path}")
+
 
 
 if __name__ == "__main__":
